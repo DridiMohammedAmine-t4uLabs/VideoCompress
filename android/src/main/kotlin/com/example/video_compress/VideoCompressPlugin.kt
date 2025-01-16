@@ -17,6 +17,7 @@ import com.otaliastudios.transcoder.internal.utils.Logger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+import io.flutter.plugin.common.PluginRegistry.Registrar
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -87,9 +88,18 @@ class VideoCompressPlugin : MethodCallHandler, FlutterPlugin {
                 val out = SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(Date())
                 val destPath: String = tempDir + File.separator + "VID_" + out + path.hashCode() + ".mp4"
 
-                var videoTrackStrategy: TrackStrategy = DefaultVideoStrategy.atMost(340).build();
                 val audioTrackStrategy: TrackStrategy
-
+                val videoTrackStrategy: TrackStrategy = when (quality) {
+                    0 -> DefaultVideoStrategy.atMost(1280, 720).build() // default quality
+                    1 -> DefaultVideoStrategy.atMost(854, 480).build() // 480p
+                    2 -> DefaultVideoStrategy.atMost(960, 540).build() // 540p
+                    3 -> DefaultVideoStrategy.atMost(1280, 720).build() // 720p
+                    4 -> DefaultVideoStrategy.atMost(1280, 1080).build() // 1080p (FHD)
+                    5 -> DefaultVideoStrategy.atMost(1920, 1080).build() // 2K (1080, 1920)
+                    else -> DefaultVideoStrategy.atMost(1280, 720).build() // Fallback default
+                }
+                
+                /*
                 when (quality) {
 
                     0 -> {
@@ -124,7 +134,7 @@ class VideoCompressPlugin : MethodCallHandler, FlutterPlugin {
                         videoTrackStrategy = DefaultVideoStrategy.atMost(1080, 1920).build()
                     }                    
                 }
-
+                */
                 audioTrackStrategy = if (includeAudio) {
                     val sampleRate = DefaultAudioStrategy.SAMPLE_RATE_AS_INPUT
                     val channels = DefaultAudioStrategy.CHANNELS_AS_INPUT
@@ -197,6 +207,12 @@ class VideoCompressPlugin : MethodCallHandler, FlutterPlugin {
 
     companion object {
         private const val TAG = "video_compress"
+
+        @JvmStatic
+        fun registerWith(registrar: Registrar) {
+            val instance = VideoCompressPlugin()
+            instance.init(registrar.context(), registrar.messenger())
+        }
     }
 
 }
