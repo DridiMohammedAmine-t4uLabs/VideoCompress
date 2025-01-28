@@ -95,9 +95,11 @@ class VideoCompressPlugin : MethodCallHandler, FlutterPlugin {
                     1 -> DefaultVideoStrategy.atMost(854, 480).build() // 480p
                     2 -> DefaultVideoStrategy.atMost(960, 540).build() // 540p
                     3 -> DefaultVideoStrategy.atMost(1280, 720).build() // 720p
-                    4 -> DefaultVideoStrategy.atMost(1280, 1080).build() // 1080p (FHD)
-                    5 -> DefaultVideoStrategy.atMost(1920, 1080).build() // 2K (1080, 1920)
-                    else -> DefaultVideoStrategy.atMost(1280, 720).build() // Fallback default
+                    4 -> DefaultVideoStrategy.atMost(854, 480).build() // 480
+                    5 -> DefaultVideoStrategy.atMost(960, 540).build() // 540
+		            6 -> DefaultVideoStrategy.atMost(1280, 720).build() // 720
+		            7 -> DefaultVideoStrategy.atMost(1920, 1080).build() // FHD
+                    else -> DefaultVideoStrategy.atMost(1920, 1080).build() // Fallback default (FHD)
                 }
                 
                 /*
