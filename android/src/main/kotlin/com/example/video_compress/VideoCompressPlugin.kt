@@ -1,3 +1,4 @@
+
 package com.example.video_compress
 
 import android.content.Context
@@ -90,16 +91,12 @@ class VideoCompressPlugin : MethodCallHandler, FlutterPlugin {
 
                 val audioTrackStrategy: TrackStrategy
                 val videoTrackStrategy: TrackStrategy = when (quality) {
-                    // 0 to 3 : low,medium,high resolutions (not used)
                     0 -> DefaultVideoStrategy.atMost(1280, 720).build() // default quality
                     1 -> DefaultVideoStrategy.atMost(854, 480).build() // 480p
                     2 -> DefaultVideoStrategy.atMost(960, 540).build() // 540p
                     3 -> DefaultVideoStrategy.atMost(1280, 720).build() // 720p
-                    // 4 to 7 : used resolutions
-                    4 -> DefaultVideoStrategy.atMost(854, 480).build() // 1080p (FHD)
-                    5 -> DefaultVideoStrategy.atMost(960, 540).build() // 2K (1080, 1920)
-                    6 -> DefaultVideoStrategy.atMost(1280, 720).build() // 2K (1080, 1920)
-                    7 -> DefaultVideoStrategy.atMost(1920, 1080).build() // 2K (1080, 1920)
+                    4 -> DefaultVideoStrategy.atMost(1280, 1080).build() // 1080p (FHD)
+                    5 -> DefaultVideoStrategy.atMost(1920, 1080).build() // 2K (1080, 1920)
                     else -> DefaultVideoStrategy.atMost(1280, 720).build() // Fallback default
                 }
                 
